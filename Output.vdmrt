@@ -1,0 +1,34 @@
+class Output
+
+instance variables
+
+--this value will be set through co-simulation
+protected port : RealPort;
+
+--local copy of the shared variables
+protected local_val : real := 0;
+
+operations
+
+-- constructor for Output
+public Output : RealPort ==> Output
+Output(p)== (
+		port := p;
+);
+
+--set Output value
+public SetValue : real ==> ()
+SetValue(v)== (
+	local_val := v;
+);
+
+public Read : () ==> real
+Read()== (
+	 return local_val;
+	 );
+	 
+-- write local variable to shared variable
+public Sync : () ==> ()
+Sync()== port.setValue(local_val); 
+
+end Output

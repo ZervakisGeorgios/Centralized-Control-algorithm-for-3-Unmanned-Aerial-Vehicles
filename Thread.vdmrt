@@ -1,0 +1,81 @@
+class Thread
+
+instance variables
+
+-- thread period
+private period : nat := 1E9;
+
+--Inputs
+public static posX : [Input] := nil;
+public static posY : [Input] := nil;
+public static posZ : [Input] := nil;
+
+public static velX : [Input] := nil;
+public static velY : [Input] := nil;
+public static velZ : [Input] := nil;
+
+public static yaw : [Input] := nil;
+public static Battery : [Input] := nil;
+
+--Outputs
+public static pitchOut : [Output] := nil;
+public static rollOut : [Output] := nil;
+public static yawOut : [Output] := nil;
+public static throttleOut : [Output] := nil;
+
+private controller : [Controller] := nil;
+
+operations
+
+--constructor for Thread
+public Thread : nat * Input * Input * Input * Input * Input * Input * Input * Output * Output * Output * Output *
+				Controller * Input ==> Thread
+Thread(f,PosX,PosY,PosZ,VelX,VelY,VelZ,Yaw,PitchOut,RollOut,YawOut,ThrottleOut,con, b)==
+(	
+	period := frequency_to_period(f);
+	posX := PosX;
+	posY := PosY;
+	posZ := PosZ;
+	velX := VelX;
+	velY := VelY;
+	velZ := VelZ;
+	yaw := Yaw;
+	pitchOut := PitchOut;
+	rollOut := RollOut;
+	yawOut := YawOut;
+	throttleOut := ThrottleOut;
+	controller := con;
+	Battery := b;
+	
+);
+
+-- control loop
+Step : () ==> ()
+Step()==
+(
+	posX.Sync();
+	posY.Sync();
+	posZ.Sync();
+	velX.Sync();
+	velY.Sync();
+	velZ.Sync();
+	yaw.Sync();
+	pitchOut.Sync();
+	rollOut.Sync();
+	yawOut.Sync();
+	throttleOut.Sync();
+	Battery.Sync();
+	
+	controller.Step();
+);
+
+thread
+periodic(period,0,0,0)(Step);
+
+
+functions
+--convert frequency to period in nanoseconds
+private frequency_to_period: real -> nat
+frequency_to_period(f) == floor 1E9/f;
+
+end Thread

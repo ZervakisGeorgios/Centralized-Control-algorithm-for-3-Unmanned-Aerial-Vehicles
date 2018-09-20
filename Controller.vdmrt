@@ -1,0 +1,762 @@
+class Controller
+
+types
+Modes = <TAKE_OFF> | <RETURN_TO_BASE> | <FLY> | <INITIALIZATION>;
+Role = <LEADER> | <WORKER>;
+State = <CALCULATE> | <WAIT>;
+public Coordinates = seq of seq of real;
+Id = nat;
+uavPosition:: x : real	-- coordinates
+			  y : real
+			  z : real
+			  bat : real	-- battery life
+
+instance variables
+id : nat1;				--unique id number of uav
+RollAng : real := 0.2;
+CarlAngleTemp : real := 0.2;
+ThrottleHigh : real := 0.51;--0.63
+ThrottleLow : real := 0.37;
+
+throttleIpart : real := 0;
+throttlePpart : real := 0;
+throttleDpart : real := 0;
+
+xIpart : real := 0;
+xPpart : real := 0;
+xDpart : real := 0;
+desiredPitch : real := 0;
+
+yIpart : real := 0;
+yPpart : real := 0;
+yDpart : real := 0;
+desiredRoll : real := 0;
+
+--desired target point
+tarX : real;
+tarY : real;
+tarZ : real;
+
+--objects
+posX : Input; --current position
+posY : Input;
+posZ : Input;
+velX : Input;
+velY : Input;
+velZ : Input;
+yaw : Input;
+Battery : Input;
+
+pitchOut : Output;
+rollOut : Output;
+yawOut : Output;
+throttleOut : Output;
+
+--waypoint generator variables
+
+
+--SearchArea : Coordinates;
+waypoints : Coordinates:=[];
+waypointsCount : Coordinates:=[];
+reverseWaypoints : Coordinates:=[];
+desiredAltitude : real := System`hwi.dAltitude.getValue();
+
+Xstart : real;
+Ystart : real;
+Zstart : real;
+--cameras capabilities
+xCamWidth : real := System`hwi.xCam.getValue();
+yCamWidth : real := System`hwi.yCam.getValue();
+
+xMax : real := 0;
+xMin : real := 0;
+yMax : real := 0;
+yMin : real := 0;
+
+xMaxI : real;
+xMinI : real;
+yMaxI : real;
+yMinI : real;
+
+i : real;
+j : real;
+index : int := 1;
+iteration : int :=1;
+initializationIndex : int := 0;
+mode : Modes;
+role : Role := <WORKER>;
+state : State := <WAIT>;
+
+--The following variables help to calculate distance covered and battery life
+TotalBattery : real;
+distanceCovered : real := 0;
+p1 : seq of real;-- p1 and p2 keeps record of coordinates, helping to calculate the distance covered
+p2 : seq of real;
+metre : real;
+
+-- Ether ports and variables
+etherIn : StringPort;
+etherOut : StringPort;
+
+uavPositions : map Id to uavPosition := {|->};
+uavPositionsZ : map Id to uavPosition := {|->};
+listUAVlag : map Id to nat := {|->};
+mapUAVlag : map Id to seq of real := {|->};
+seqUAVlag : seq of Id := [];
+-- keeps record of UAVs undertaking a task
+listOfWorkers : map Id to seq of real := {|->}; 
+-- keeps record of UAVs which have finished their tasks, and the task's coordinates
+listOfAchievements : seq of seq of real := []; 
+destroyedUAV : seq of nat := [];
+
+leader : nat :=0;
+seqUAV : seq of nat := [];
+seqUAV2 : seq of nat := []; -- Copy of the sequence that stores the UAVs taking part in the mission, it will be used to distribute tasks
+numOfUAVs : nat :=0;
+numOfUAVRequired : real;
+numberOfUAVRequired : int;
+squaremetre : real;
+scanAreaPerUAV : real := System`hwi.scanAreaPerUAV.getValue(); -- determines the square metres a UAV is allowed to search on each own
+zervakisResult : real;
+
+ack : int :=0;
+receivedAck : int :=0;
+generateIndex : int := 0;
+indexSplit : int := 1;
+stopCalculate : int := 0;
+
+-- The leader uses the next variables to distribute tasks
+tagId : Id := 0;
+sendxMax : real := 0;
+sendxMin : real := 0;
+sendyMax : real := 0;
+sendyMin : real :=0;
+
+findFlag : bool := false;
+achievementFlag : bool := true;
+
+ZERVAKIS_FINAL : int := 0;
+
+--receivedTagId : Id;
+--receivedxMax : real;
+--receivedxMin : real;
+--receivedyMax : real;
+--receivedyMin : real;
+
+operations
+
+--MAIN CONTROL LOOP
+public Step : () ==> ()
+Step()==
+(	--the first time the waypoints will be generated
+	if mode = <INITIALIZATION> --This mode is required due to the fact that INTO-CPS's original values are ZEROS. We allow 2 iterations before initialize the variables
+	then (if initializationIndex>42
+		 then (Xstart := posX.GetValue();
+		 	   Ystart := posY.GetValue();
+		 	   Zstart := 0;--posZ.GetValue(); -- initial altitude is 0.5, however the battery can be charged when the altitude is lower than 0.1, hence the original altitude is set 0
+		 	   --GenerateWaypoints();----------
+		 	   
+		 	   -- turns the set of Ids into a seq
+		 	   seqUAV := [id];
+			   for all d in set dom uavPositions do -- dom uavPositions contains every UAV except for itself, its UAV has to add itself into the seq
+			   seqUAV := seqUAV^[d];
+			   numOfUAVs := len seqUAV;
+			   -- Copies the sequence of UAVs
+			   for iii=1 to len seqUAV do
+			   seqUAV2 := seqUAV2^[iii];
+			   
+			   -- elects as a leader the UAV owing the least ID number
+			   leader := id;
+			   for zi=1 to len seqUAV do
+			   if leader > seqUAV(zi) then leader := seqUAV(zi);
+			   
+			   if id = leader then state := <CALCULATE>;
+			   
+			   SetRole();
+			   
+			   -- Updates list of UAVs
+			   -- updateUAVs();--------------
+		 );
+		 initializationIndex := initializationIndex + 1;--the UAV is forced to stay at its position as far as the INITIALIZATION mode is active.
+		 tarX := posX.GetValue();
+		 tarY := posY.GetValue();
+		 tarZ := posZ.GetValue();
+	)
+	else if mode = <RETURN_TO_BASE> 
+	then ( tarX := Xstart; tarY := Ystart; tarZ := desiredAltitude; 
+				if (posX.GetValue() > tarX - 0.3 and posX.GetValue() < tarX + 0.3) and   --Battery's location is placed at the point 5,5,0
+				   (posY.GetValue() > tarY - 0.3 and posY.GetValue() < tarY + 0.3) then tarZ := Zstart) -- to Avoid collisions the UAV will land when it has reached the base
+	else if mode = <TAKE_OFF> 
+	then (tarX := posX.GetValue(); tarY := posY.GetValue();  tarZ := desiredAltitude;)
+	else if mode = <FLY> then (
+	--here the avoidance will be placed --if index=0 then set new waypoint and index:=1 else skip, it will keep the same waypoint as before, if the waypoint has been erached set index :=0 again
+	--ean den iparxi obstacle tha beni edo, allios epomeno waypoint tha orizetai to avoidance
+	tarX := waypoints(1)(1);							--the head of waypoints is the first waypoint
+	tarY := waypoints(1)(2);							
+	tarZ := waypoints(1)(3);
+		if ((posX.GetValue() > tarX - 0.4 and posX.GetValue() < tarX + 0.4)  and 	-- if a waypoint has been reached between a certain values then it is deleted and the next waypoint takes place
+			 (posY.GetValue() > tarY - 0.4 and posY.GetValue() < tarY + 0.4) and 
+			  (posZ.GetValue() > tarZ - 1 and posZ.GetValue() < tarZ + 1))
+		then waypoints := tl waypoints;
+	);
+	
+	--Summarizes the distance covered by the UAV
+	p1 := [p2(1),p2(2),p2(3)];
+	p2 := [posX.GetValue(),posY.GetValue(),posZ.GetValue()];
+	distanceCovered := distanceCovered + GetDistance2(p1,p2);
+	
+	if role = <LEADER> and state = <CALCULATE> and seqUAV2 <> []
+	then (	
+			squaremetre := (xMaxI - xMinI)*(yMaxI - yMinI);	-- calculates how many square metres the searching area is
+			-- calculates how many UAVs are required for the mission
+			numOfUAVRequired := squaremetre/scanAreaPerUAV;
+			numberOfUAVRequired := floor numOfUAVRequired;
+			if numberOfUAVRequired < numOfUAVRequired then numberOfUAVRequired := numberOfUAVRequired + 1;
+			
+			if numberOfUAVRequired = 1
+			then( xMax := xMaxI; 
+				  xMin := xMinI; 
+				  yMax := yMaxI; 
+				  yMin := yMinI; 
+				  state := <WAIT>;
+				  listOfWorkers :={id |-> [xMax,xMin,yMax,yMin]};
+				  )
+			else if numberOfUAVRequired <= numOfUAVs
+			then ( if stopCalculate < numberOfUAVRequired then (
+				stopCalculate := stopCalculate + 1;
+				if xMaxI - xMinI >= yMaxI - yMinI
+				then ( tagId := hd seqUAV2;
+					if tagId = id --seqUAV2 := tl seqUAV2;
+					then (seqUAV2 := tl seqUAV2;
+						  xMax := xMaxI;
+						  xMin := xMinI;
+						  zervakisResult := (yMaxI - yMinI)/numberOfUAVRequired;
+						  yMin := yMinI + (indexSplit - 1)*zervakisResult;
+						  yMax := yMinI + (indexSplit*zervakisResult); --indexSplit := indexSplit + 1;
+						  indexSplit := indexSplit + 1;
+						  listOfWorkers := listOfWorkers ++ {tagId |-> [xMax,xMin,yMax,yMin]};
+					)
+					else (seqUAV2 := tl seqUAV2;
+						  sendxMax := xMaxI;
+						  sendxMin := xMinI;
+						  zervakisResult:= (yMaxI - yMinI)/numberOfUAVRequired;
+						  sendyMin := yMinI + (indexSplit - 1)*zervakisResult;
+						  sendyMax := yMinI + (indexSplit*zervakisResult); -- indexSplit := indexSplit + 1; state := <WAIT>;
+						  indexSplit := indexSplit + 1;
+						  state := <WAIT>;
+					)
+				)
+				else ( tagId := hd seqUAV2;
+					if tagId = id --seqUAV2 := tl seqUAV2;
+					then ( seqUAV2 := tl seqUAV2;
+						   yMax := yMaxI;
+						   yMin := yMinI;
+						   zervakisResult := (xMaxI - xMinI)/numberOfUAVRequired;
+						   xMin := xMinI + (indexSplit - 1)*zervakisResult;
+						   xMax := xMinI + (indexSplit*zervakisResult);
+						   indexSplit := indexSplit + 1;
+						   listOfWorkers := listOfWorkers ++ {tagId |-> [xMax,xMin,yMax,yMin]};
+						  )
+					else (seqUAV2 := tl seqUAV2;
+						  sendyMax := yMaxI;
+						  sendyMin := yMinI;
+						  zervakisResult := (xMaxI - xMinI)/numberOfUAVRequired;
+						  sendxMin := xMinI + (indexSplit - 1)*zervakisResult;
+						  sendxMax := xMinI + (indexSplit*zervakisResult);
+						  indexSplit := indexSplit + 1;
+						  state := <WAIT>;
+						  )
+				)
+				)
+			)-- dont need stopcalculate variable because seqUAV2 is going to be empty
+			else (if xMaxI - xMinI >= yMaxI - yMinI
+				then ( tagId := hd seqUAV2;
+					if tagId = id --seqUAV2 := tl seqUAV2;
+					then (seqUAV2 := tl seqUAV2;
+						  xMax := xMaxI;
+						  xMin := xMinI;
+						  zervakisResult := (yMaxI - yMinI)/numOfUAVs;
+						  yMin := yMinI + (indexSplit - 1)*zervakisResult;
+						  yMax := yMinI + (indexSplit*zervakisResult); --indexSplit := indexSplit + 1;
+						  indexSplit := indexSplit + 1;
+						  listOfWorkers := listOfWorkers ++ {tagId |-> [xMax,xMin,yMax,yMin]};
+					)
+					else (seqUAV2 := tl seqUAV2;
+						  sendxMax := xMaxI;
+						  sendxMin := xMinI;
+						  zervakisResult:= (yMaxI - yMinI)/numOfUAVs;
+						  sendyMin := yMinI + (indexSplit - 1)*zervakisResult;
+						  sendyMax := yMinI + (indexSplit*zervakisResult); -- indexSplit := indexSplit + 1; state := <WAIT>;
+						  indexSplit := indexSplit + 1;
+						  state := <WAIT>;
+					)
+				)
+				else ( tagId := hd seqUAV2;
+					if tagId = id --seqUAV2 := tl seqUAV2;
+					then ( seqUAV2 := tl seqUAV2;
+						   yMax := yMaxI;
+						   yMin := yMinI;
+						   zervakisResult := (xMaxI - xMinI)/numOfUAVs;
+						   xMin := xMinI + (indexSplit - 1)*zervakisResult;
+						   xMax := xMinI + (indexSplit*zervakisResult);
+						   indexSplit := indexSplit + 1;
+						   listOfWorkers := listOfWorkers ++ {tagId |-> [xMax,xMin,yMax,yMin]};
+						  )
+					else (seqUAV2 := tl seqUAV2;
+						  sendyMax := yMaxI;
+						  sendyMin := yMinI;
+						  zervakisResult := (xMaxI - xMinI)/numOfUAVs;
+						  sendxMin := xMinI + (indexSplit - 1)*zervakisResult;
+						  sendxMax := xMinI + (indexSplit*zervakisResult);
+						  indexSplit := indexSplit + 1;
+						  state := <WAIT>;
+						  )
+						  
+				)
+			);
+		);
+		
+	if id = leader and time >= ZERVAKIS_FINAL and seqUAVlag <> [] and state = <CALCULATE>
+	then (	
+		for ai = 1 to len seqUAV do
+			 if findFlag = false and seqUAVlag <> []
+			 	-- if this functional UAV does not have any other task, it means it does not belong into the listOfWorkers
+				then if (not exists aj in set dom listOfWorkers & seqUAV(ai) = aj and (not exists ak in set elems destroyedUAV & ak = seqUAV(ai)))
+					then ( if seqUAV(ai) = id 
+							then (xMax := mapUAVlag(hd seqUAVlag)(1);
+						   		  xMin := mapUAVlag(hd seqUAVlag)(2);
+						   		  yMax := mapUAVlag(hd seqUAVlag)(3);
+						   		  yMin := mapUAVlag(hd seqUAVlag)(4);
+						   		  mapUAVlag := {hd seqUAVlag} <-: mapUAVlag;
+						   		  seqUAVlag := tl seqUAVlag;
+						   		  listOfWorkers := listOfWorkers ++ {id |-> [xMax,xMin,yMax,yMin]};
+										)
+							else ( findFlag := true;
+								   tagId := seqUAV(ai);
+								   sendxMax := mapUAVlag(hd seqUAVlag)(1);
+								   sendxMin := mapUAVlag(hd seqUAVlag)(2);
+								   sendyMax := mapUAVlag(hd seqUAVlag)(3);
+								   sendyMin := mapUAVlag(hd seqUAVlag)(4);
+								   mapUAVlag := {hd seqUAVlag} <-: mapUAVlag;
+								   seqUAVlag := tl seqUAVlag;
+								   state := <WAIT>;
+							);
+						);
+		);
+	
+	-- The leader waits for an acknowledgment from a worker that it received the task	
+	if id = leader and state = <WAIT>
+		then ( if receivedAck = 1 
+			  then (listOfWorkers := listOfWorkers ++ {tagId |-> [sendxMax,sendxMin,sendyMax,sendyMin]};
+			  		state := <CALCULATE>;
+			        tagId := 0;
+			        receivedAck :=0;
+			        sendxMax := 0;
+			        sendxMin := 0;
+			        sendyMax := 0;
+			        sendyMin := 0;
+			        findFlag := false;
+			        );
+		);
+	-- If received task, then generate waypoints
+	if generateIndex = 0 then (
+			if (xMax<>0 or xMin <> 0) and (yMax <>0 or yMin <>0) 
+			then (i := xMin + (xCamWidth/2) - xCamWidth * 0.05;--scans 5% out of the cameras capabilities due to the fact that the drones cannot reach the exactly position of the waypoints
+				  j := yMin + (yCamWidth/2) - yCamWidth * 0.05;--these variables are the left lower point of the rectangular area
+				  GenerateWaypoints();
+				  generateIndex := 1;)
+			);
+	-- if the worker finishes its task it sends an acknowledgment indicating this information, and resets its data, so as to be able to receive a new task
+	if role = <WORKER> and ack = 1 and waypoints = [] --and time >= 3E9
+	then ( ack := 2;
+			xMax := 0;
+			xMin := 0;
+			yMax := 0;
+			yMin := 0;
+			generateIndex := 0;
+	);
+	--When the leader has finished its task it removes its self from the list
+	if id=leader and waypoints = [] 
+	then (listOfWorkers := {id} <-: listOfWorkers;
+		 if xMax <> 0 and xMin <> 0 and yMax <> 0 and yMin <> 0 then (
+		  listOfAchievements := listOfAchievements^[[xMax,xMin,yMax,yMin]];);-- problem, if someone carries out 2 tasks, it will be overriden, change to seq of seq of real, only store areas
+		  xMax := 0;
+		  xMin := 0;
+		  yMax := 0;
+		  yMin := 0;
+		  generateIndex := 0;
+	);
+	
+	----- TESTING VARIABLES-----------------
+	-- For testing purposes, the leader's ack is set the number of uavs undertaking a task/ the number of uavs that have finished their tasks| card dom listOfWorkers-listOfAchievements
+	if id=leader then (if destroyedUAV <> [] then ack := destroyedUAV(1));--seqUAV;--card dom uavPositions;
+	-- if am worker then sendxMax and sendxMin are useless, I am using them for testing purposes
+	if role = <WORKER>
+	then ( sendxMax := card dom listOfWorkers; sendxMin := len listOfAchievements;);
+	----------------------------------------
+	
+	
+	-- SENDS AND RECEIVES MESSAGES using Ether
+	
+	if id = leader then
+	(StepEther();)
+	else if role = <WORKER> and id = 3 then StepEther()
+	else if role = <WORKER> and time <= 10E9 then StepEther();
+	--StepEther();
+	
+	--Calls the operation SetMode to set the current mode depending of the battery and the waypoints
+	SetMode();-- when the uav reaches the last waypoint, it will be deleted and the setMode() will set the mode as returntobase
+	
+	-- The operation MoveX does not accept 0 as input
+	if tarX = 0 then tarX := 0.01; 
+	
+	if id = 2 and time >= 10E9 then (tarX := posX.GetValue(); tarY := posY.GetValue(); tarZ := 0);
+	
+	MoveX(tarX);  
+	setPitch();
+	SetAltitude(tarZ);
+	
+);
+
+--constructor for Controller
+public Controller : Input*Input*Input*Input*Input*Input*Input*Input*Output*Output*Output*Output*StringPort*StringPort ==> Controller 
+Controller(PosX,PosY,PosZ,VelX,VelY,VelZ,Yaw,b,Pitchout,Rollout,Yawout,Throttleout,iin,out)==
+(	Battery := b;	--is input showing the remaining battery
+	TotalBattery := Battery.GetValue(); --stores the maximum battery value
+	id := System`hwi.idNum.getValue();	--this value can be set through INTO-CPS
+	posX := PosX;
+	posY := PosY;
+	posZ := PosZ;
+	velX := VelX;
+	velY := VelY;
+	velZ := VelZ;
+	yaw := Yaw;
+	pitchOut := Pitchout;
+	rollOut := Rollout;
+	yawOut := Yawout;
+	throttleOut := Throttleout;
+	--waypointgenerator variables
+		
+	--Xstart := 5;--posX.GetValue(); 5,5,0 is the position of the recharger, which differs from the initial position
+	--Ystart := 5; --posY.GetValue();
+	--Zstart := 0;--posZ.GetValue();
+	--tarX := Xstart;
+	--tarY := Ystart;
+	--tarZ := Zstart;
+	
+	--SearchArea := [[System`hwi.xmin.getValue(),System`hwi.ymin.getValue()],[System`hwi.xmax.getValue(),System`hwi.ymax.getValue()]];--SSEARCHING AREA CAN BE CHANGED VIA INTO-CPS
+	xMaxI := System`hwi.xmax.getValue();
+	xMinI := System`hwi.xmin.getValue();
+	yMaxI := System`hwi.ymax.getValue();
+	yMinI := System`hwi.ymin.getValue();
+	
+	--i := xMin + (xCamWidth/2) - xCamWidth * 0.05;--scans 5% out of the cameras capabilities due to the fact that the drones cannot reach the exactly position of the waypoints
+	--j := yMin + (yCamWidth/2) - yCamWidth * 0.05;--these variables are the left lower point of the rectangular area
+	mode := <INITIALIZATION>;
+	p1 := [posX.GetValue(), posY.GetValue(), posZ.GetValue()];-- two points to keep coordinates helping calculating the distance covered.
+	p2 := [posX.GetValue(), posY.GetValue(), posZ.GetValue()];
+	
+	--ether
+	etherIn := iin;
+	etherOut := out;
+);
+--Waypoint generator
+public GenerateWaypoints: () ==> ()
+GenerateWaypoints()==
+(	
+if ((xMax - xMin) >= (yMax - yMin))	then(
+	while j <= (yMax + (yCamWidth/2) - yCamWidth*0.05) do	-- it could be yMax + 5
+	(	while i <= (xMax + (xCamWidth/2) - xCamWidth*0.05) do
+		(	if i <= xMax and j <= yMax
+			then waypointsCount := waypointsCount^[[i,j,desiredAltitude]]--we can define areas where the altitude would be greater for some reason (e.g. mounatinous area)
+			else if i >= xMax and j <= yMax
+			then waypointsCount := waypointsCount^[[xMax,j,desiredAltitude]]
+			else if i <= xMax and j >= yMax
+			then waypointsCount := waypointsCount^[[i,yMax,desiredAltitude]]
+			else if i >= xMax and j >= yMax
+			then waypointsCount := waypointsCount^[[xMax,yMax,desiredAltitude]];
+			i := i + xCamWidth - xCamWidth * 0.05;	-- 5% overlaps
+		);
+		i := xMin + (xCamWidth/2) - xCamWidth * 0.05;
+		j := j + yCamWidth - yCamWidth * 0.05;
+		if index mod 2 =1 then (waypoints := waypoints^waypointsCount)
+		else (reverseWaypoints := reverse waypointsCount;
+				waypoints := waypoints^reverseWaypoints;
+			);
+		index := index + 1;
+		waypointsCount := [];
+	);
+)
+else (	while i <= (xMax + (xCamWidth/2) - xCamWidth*0.05) do
+		(	while j <= (yMax + (yCamWidth/2) - yCamWidth*0.05) do
+			(	if j <= yMax and i <= xMax
+				then waypointsCount := waypointsCount^[[i,j,desiredAltitude]]
+				else if j >= yMax and i <= xMax
+				then waypointsCount := waypointsCount^[[i,yMax,desiredAltitude]]
+				else if j <= yMax and i >= xMax
+				then waypointsCount := waypointsCount^[[xMax,j,desiredAltitude]]
+				else if j >= yMax and i >= xMax
+				then waypointsCount := waypointsCount^[[xMax,yMax,desiredAltitude]];
+				
+				j := j + yCamWidth - yCamWidth * 0.05;	
+			);
+			j := yMin + (yCamWidth/2) - yCamWidth * 0.05;
+			i := i + xCamWidth - xCamWidth * 0.05;	-- 5% overlaps
+			if index mod 2 =1 then (waypoints := waypoints^waypointsCount)
+			else (reverseWaypoints := reverse waypointsCount;
+				waypoints := waypoints^reverseWaypoints;
+			);
+			index := index + 1;
+			waypointsCount := [];
+		)
+	);
+);
+-- Operation Ether
+public StepEther: () ==> ()
+StepEther()==cycles(2) (
+	-- convert to string representation and send
+	etherOut.setValue(VDMUtil`val2seq_of_char[nat*real*real*real*real*Id*real*real*real*real*int*map Id to seq of real*seq of seq of real](
+	mk_(id, posX.GetValue(),posY.GetValue(),posZ.GetValue(),Battery.GetValue(),tagId,sendxMax,sendxMin,sendyMax,sendyMin,ack,listOfWorkers,listOfAchievements)));
+	
+	-- try to convert from string to list of strings
+	if len etherIn.getValue() >= 2 then(		-- by default "]" will be sent from Ether
+	let mk_(list,l) = VDMUtilDebug`seq_of_char2val[seq of(nat*real*real*real*real*Id*real*real*real*real*int*map Id to seq of real*seq of seq of real)](etherIn.getValue())
+		in if list then (
+			for all z in set inds l do (
+				let x = l(z) in (
+				if exists ri in set elems destroyedUAV & ri = x.#1 then skip
+				else(
+					if id = leader 
+					then( 	-- the map changes dynamically, new UAVs can be added
+							if card dom uavPositions <> card dom uavPositionsZ and time >= 6E9
+							then (	uavPositionsZ := uavPositionsZ ++ uavPositions;
+									for all iz in set dom uavPositionsZ do
+									listUAVlag(iz) := 0;
+								)
+							else (	if uavPositions(x.#1).x = x.#2 and
+							  		 uavPositions(x.#1).y = x.#3 and
+							  		 uavPositions(x.#1).z = x.#4
+									then (listUAVlag(x.#1) := listUAVlag(x.#1) + 1;)
+									else listUAVlag(x.#1) := 0;
+							);
+							if exists kk in set dom listUAVlag & kk = x.#1 and listUAVlag(x.#1) > 10
+							then ( if exists kki in set dom listOfWorkers & kki = x.#1 
+									then(	-- if the UAV had been given a task, then the coordinates are stored
+											mapUAVlag(x.#1) := listOfWorkers(x.#1);
+											listOfWorkers := {x.#1} <-: listOfWorkers;
+											seqUAVlag := seqUAVlag^[x.#1];
+										);
+								  -- The destroyed UAV is deleted from the lists of functional UAVs
+								  destroyedUAV := destroyedUAV^[x.#1];------------------------------------
+								  ZERVAKIS_FINAL := time + 1E9;
+								  uavPositions := {x.#1} <-: uavPositions;
+								  uavPositionsZ := {x.#1} <-: uavPositionsZ;
+								  listUAVlag := {x.#1} <-: listUAVlag;
+								  seqUAV := [id];
+			  					  for all d in set dom uavPositions do -- dom uavPositions contains every UAV except for itself, its UAV has to add itself into the seq!@#$$#@!@#$
+			 					  seqUAV := seqUAV^[d];
+			  					  numOfUAVs := len seqUAV;
+							);
+					);
+					uavPositionsZ := uavPositionsZ ++ uavPositions;
+					
+					if not exists li in set elems destroyedUAV & li = x.#1 then
+					uavPositions := uavPositions++{x.#1 |-> mk_uavPosition(x.#2,x.#3,x.#4,x.#5)};---------------------------------------
+					
+					-- if the sender is the leader and I am worker then overrides listOfWorkers and listOfAchievements
+					if x.#1 = leader and role = <WORKER> 
+					then (listOfWorkers := x.#12; --listOfWorkers ++ x.#12;
+						  	listOfAchievements := x.#13;
+					);
+					if x.#1 = leader and x.#1 <> 0 and id = x.#6 then
+					(xMax := x.#7;	-- receivedTag is not necessary
+					xMin := x.#8;
+					yMax := x.#9;
+					yMin := x.#10;
+					ack := 1; -- sends acknowledgment that it received the coordinates
+					);
+					-- The leader waits to receives an acknowledgment that the worker received its task
+					if id = leader and tagId=x.#1 then
+					receivedAck := x.#11;
+					-- The leader removes a worker and its task from the list when it receives an acknowledgment that the worker has finished
+					if id = leader and exists ll in set dom listOfWorkers & ll = x.#1 and x.#11 = 2
+					then ( achievementFlag := true;
+							for qi = 1 to len listOfAchievements do
+								if listOfAchievements(qi) = listOfWorkers(x.#1)
+								then achievementFlag := false;
+						 if achievementFlag = true then (	
+						  listOfAchievements := listOfAchievements^[listOfWorkers(x.#1)];);
+						  listOfWorkers := {x.#1} <-: listOfWorkers;
+					)
+					)
+				)
+			)
+	)
+	)
+);
+
+-- Updates the list of UAVs
+public updateUAVs: () ==> ()
+updateUAVs()== (
+		-- The list of UAVs changes dynamically, UAVs can be added or removed
+		if (card dom uavPositions) <> (card dom uavPositionsZ)
+		then(uavPositionsZ := {|->};
+			 uavPositionsZ := uavPositionsZ ++ uavPositions;
+			 listUAVlag := {|->};
+			 for all zk in set dom uavPositions do -- initializes the indeces at 0
+			 	listUAVlag(zk) := 0;
+			)
+		else
+			for all zi in set dom uavPositions do (
+				if uavPositions(zi).x = uavPositionsZ(zi).x and
+				   uavPositions(zi).y = uavPositionsZ(zi).y and
+				   uavPositions(zi).z = uavPositionsZ(zi).z and
+				   uavPositions(zi).bat = uavPositionsZ(zi).bat
+				then (listUAVlag(zi) := listUAVlag(zi)+1;
+				)
+				-- if the UAV renewed its values then it is alive and its index becomes 0, it is crucial to zero the indeces if the UAVs are functional, because of the duplicates, they can stack and reach the limit
+				else listUAVlag(zi):=0;
+				-- If there are 10 continuous iterations without any update, remove zi
+				if listUAVlag(zi)>5
+				then (
+					uavPositions:=  {zi} <-: uavPositions;
+					uavPositionsZ:= {zi} <-: uavPositions;
+					listUAVlag:= {zi} <-: listUAVlag;
+					--if the leader was removed, a new leader will be elected from the remaining UAVs
+					if leader = zi then (seqUAV := [id];
+										if uavPositions = {|->} then (leader := id; numOfUAVs:=1;)
+										else(
+			   							 for all d in set dom uavPositions do -- dom uavPositions contains every UAV except for itself, its UAV has to add itself into the seq
+			  							 seqUAV := seqUAV^[d];
+			 							 numOfUAVs := len seqUAV;
+										 leader := id;
+			   						     for zii=1 to len seqUAV do
+			  							 if leader > seqUAV(zii) then leader := seqUAV(zii);)
+			  							 );
+				 )
+			)	   
+);
+-- calculates the roll which is responsible for X-position
+public MoveX: real ==> ()
+	MoveX(x) == (
+		if x <> 0.0 then
+			if x - posX.GetValue()  < x*0.01 then 
+				RollAng := CarlAngleTemp; --3.1;
+		if x <> 0.0 then
+			if x > posX.GetValue() then
+				if velX.GetValue() < abs(posX.GetValue()-x)+0.01 then 
+					rollOut.SetValue(CarlAngleTemp)--(RollAng)
+				else if posX.GetValue() > (x) or velX.GetValue() > (posX.GetValue()-x)  then 
+					rollOut.SetValue(-CarlAngleTemp) 
+				else rollOut.SetValue(CarlAngleTemp)
+    	else if velX.GetValue() > (x - posX.GetValue())+0.01 then 
+    		rollOut.SetValue(-CarlAngleTemp)
+		else if posX.GetValue() < (x) or velX.GetValue() < (x - posX.GetValue())  then 
+			rollOut.SetValue(CarlAngleTemp)
+		else rollOut.SetValue(-CarlAngleTemp);
+	);
+
+public setPitch: () ==>  ()
+	setPitch() == (
+		--yIpart := yIpart + ((posY.GetValue()-targetY) * 0.00); 
+    yPpart := ( posY.GetValue()- tarY) * 0.28;
+    yDpart := velY.GetValue() * -0.2;
+    desiredPitch := yIpart + yPpart - yDpart;
+    if desiredPitch > 0.35 then
+    	desiredPitch := 0.35;
+    if desiredPitch < -0.35 then
+    	desiredPitch := -0.35;
+ 		pitchOut.SetValue(desiredPitch)
+	);
+
+public SetAltitude: real ==> ()
+	SetAltitude(altitude) ==(
+		if altitude > posZ.GetValue() then
+			if velZ.GetValue() < abs(posZ.GetValue()-altitude)+0.025 then 
+				Upwards(ThrottleHigh)
+			else if posZ.GetValue() > (altitude) or velZ.GetValue() > (posZ.GetValue()-altitude) then 
+				Upwards(ThrottleLow) 
+			else Upwards(ThrottleHigh)
+    	else if velZ.GetValue() > (altitude - posZ.GetValue())+0.025 then 
+    		Upwards(ThrottleLow)
+			else if posZ.GetValue() < (altitude) or velZ.GetValue() < (altitude - posZ.GetValue())  
+			then Upwards(ThrottleHigh) 
+			else Upwards(ThrottleLow);
+);
+public Upwards: real ==> ()
+	Upwards(throttle) == (
+    throttleOut.SetValue(throttle);
+	);
+
+
+-- SETS THE MODE
+public SetMode: () ==> ()
+SetMode()==
+	(										 --The very few seconds, the UAV will gain high without moving in order to avoid collisions		--distanceFromBase works well
+	metre := distanceCovered/ (6500 - Battery.GetValue());	--calculates the average consumption per Battery unit																				--BatteryValue works, else if works
+	if initializationIndex <= 43 then mode := <INITIALIZATION>
+	else if ((time > 100E9) and ((metre * Battery.GetValue() - 500)< distanceFromBase())) or waypoints = [] then mode := <RETURN_TO_BASE>	--works perfectly, without constants							--totalBattery does not work/ replaced by 6500
+	--if ((time > 100E9) and (metre * Battery.GetValue()< distanceFromBase() or Battery.GetValue() < 1100)) or waypoints = [] then mode := <RETURN_TO_BASE>	-- it works perfectly
+	--if Battery.GetValue() < 3500 or waypoints = [] then mode := <RETURN_TO_BASE>	--works perfect, but the limit is constant
+	--if 6500 - Battery.GetValue() > 2000 or waypoints = [] then mode := <RETURN_TO_BASE>
+	else if Battery.GetValue() > 6000 and waypoints <> [] then 	(if posZ.GetValue() < 15 then mode := <TAKE_OFF> --Vertical take off to avoid collisions
+																 else	mode := <FLY>)
+	else skip;
+	);
+-- SETS ROLE
+public SetRole: () ==> ()
+SetRole()==
+	( if id = leader then role := <LEADER>
+	  else role := <WORKER>;
+	 );
+
+--Calculates the distance between the current position and the base
+public distanceFromBase: () ==> real
+distanceFromBase()==
+(	return squareRoot(square(posX.GetValue() - Xstart) + square(posY.GetValue() - Ystart) + square(posZ.GetValue() - Zstart))
+);
+
+--Calculates the distance between two points in 3D
+public GetDistance2: seq of real * seq of real ==> real
+GetDistance2(s1,s2)==
+(	return squareRoot(square(s1(1) - s2(1)) + square(s1(2) - s2(2)) + square(s1(3) - s2(3))));
+
+-- Operation using Newton's iteration to calculate the square root of a number
+public squareRoot: real ==> real
+squareRoot(n)==
+(	if n = 0 then return 0
+	else(
+	dcl x:real := 1, nextx: real := n;
+	while abs (x - nextx) >= 0.05*x do
+	(	x := nextx;
+		nextx := ((n/x) + x) / 2;
+	);
+	return nextx)
+);
+--Returns the n^2
+public square: real ==> real
+square(n)==
+(return n*n);
+
+
+functions
+-- The function finds the maximum number between two real numbers
+public FindMax : real * real -> real
+FindMax(x1,x2)==
+	( if x1>x2 then x1
+	  else x2);
+-- The function finds the minimum number between two real numbers
+public FindMin : real * real -> real
+FindMin(x1,x2)==
+	( if x1<x2 then x1
+	  else x2);
+-- Checks whether the waypoints has finished
+public Finish : Coordinates -> bool
+Finish(w)==
+if (len w = 0) then true
+else false;
+
+
+
+
+end Controller

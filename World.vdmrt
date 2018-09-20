@@ -1,0 +1,24 @@
+class World
+operations
+
+-- run a simulation
+public run : () ==> ()
+run() ==
+ (start(System`mainthread);
+  block();
+ );
+
+-- wait for simulation to finish
+block : () ==> ()
+block() == skip;
+
+sync per block => false;
+
+values
+
+public static q01Xstart : real = 0.0;
+public static q01Ystart : real = 0.0;
+public static q01Zstart : real = 0.0;
+public static q01Thetastart : real = 0.0;
+
+end World

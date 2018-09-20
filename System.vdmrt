@@ -1,0 +1,46 @@
+system System
+
+instance variables
+
+--Hardware interface variable required by FMU Import/Export
+public static hwi : HardwareInterface := new HardwareInterface();
+
+--controller
+public static controller : [Controller] := nil;
+public static mainthread : [Thread] := nil;
+
+cpu : CPU := new CPU(<FP>, 1E6);
+
+operations
+public System : () ==> System
+System()==
+(	let posX = new Input(hwi.posXIn),
+		posY =  new Input(hwi.posYIn),
+ 		posZ =  new Input(hwi.posZIn),
+		velX =  new Input(hwi.velXIn),
+      	velY =  new Input(hwi.velYIn),
+ 		velZ =  new Input(hwi.velZIn),
+		yaw =  new Input(hwi.yawIn),
+ 		batteryCharge =  new Input(hwi.batteryChargeIn),
+		 pitchOut = new Output(hwi.pitchOut),
+ 		rollOut = new Output(hwi.rollOut),
+ 		yawOut = new Output(hwi.yawOut),
+ 		throttleOut = new Output(hwi.throttleOut)
+in 
+	(		
+		controller := new Controller( posX , posY , posZ ,velX , velY , velZ ,  yaw , batteryCharge,
+  									   pitchOut , rollOut , yawOut , throttleOut,hwi.etherIn,hwi.etherOut);
+  							   
+  	mainthread := new Thread(25, velX , velY , velZ , 
+  							   posX , posY , posZ , 
+  							   yaw ,
+  							   pitchOut , rollOut , yawOut , throttleOut,controller, batteryCharge );
+  );
+  -- deploy the mainthread
+  cpu.deploy(mainthread);
+ );
+
+
+
+
+end System

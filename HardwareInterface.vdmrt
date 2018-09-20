@@ -1,0 +1,205 @@
+--##	EXPORT	e8d7f23094dc6ec3a4ff560fbad9be4b632f7082	Exp.fmu	2017-12-07 14:38:04	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	34c3db3dd30bbbf8ce001b0536bb1cfb580f557e	Exp.fmu	2017-12-07 13:55:59	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	41aa18853a9a0b4fac4add94a90f085cf812a70a	Exp.fmu	2017-10-07 21:09:35	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	74f4bfcf0fbf37f86609afa2b7f35411446b20e2	Exp.fmu	2017-10-07 20:46:35	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	a045fb1f5091c96d2b9ae50880b4715e4daa01a4	Exp.fmu	2017-10-07 19:52:55	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	4560962fd8b4beb5249de5803475bca868087c12	Exp.fmu	2017-10-07 19:46:30	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	d2eea53cb75d0dcb73b3318395505acd658d44be	Exp.fmu	2017-10-07 19:43:19	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	73ebcadcb18c51cdd12840d594c0575a5906ea31	Exp.fmu	2017-10-07 19:39:07	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	3eee80b1c7fb15ed9c19c88d162826f75e3750ad	Exp.fmu	2017-10-07 19:27:53	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	a4c9498159d798df68f35c5a1180c5a6fa7ad69	Exp.fmu	2017-10-07 19:00:33	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	fc5a66c3ba1811c056906273eb18e9d17bceae81	Exp.fmu	2017-10-07 18:53:10	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	938ba81fbb1bdb7350b62e41a9d961894dc01c12	Exp.fmu	2017-10-07 18:49:32	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	9b4c7c8e270e8dea9c357667b1dc0276b9c09414	Exp.fmu	2017-10-07 18:41:55	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	eb555d4b1f32d74200bc5b734bb4516ebf7a02cf	Exp.fmu	2017-10-07 18:24:23	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	92762a6eca7e3b4a12f2f4e74a31dfa1c08fabab	Exp.fmu	2017-10-07 18:17:46	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	f7b7265987fc3d13dc721f93c3865bb8c7b6cae6	Exp.fmu	2017-10-07 18:13:41	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	ca47c8039f673b056cb1b4ca909db4bd2be7fe28	Exp.fmu	2017-10-07 18:04:11	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	a5bbed60c5353d0452882b88be20c2b92bbe414	Exp.fmu	2017-10-07 14:27:39	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	6656e7ab2681da6aa703ca1f20efa93fd3c64401	Exp.fmu	2017-10-07 14:25:39	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	ce20e4bdfae9b1899f22f527b583a24d98f4fbd6	Exp.fmu	2017-09-07 23:06:25	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	5d40fcd535df3b3e88f3d9eb22231a8f54ecd16	Exp.fmu	2017-09-07 20:54:11	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	be0419c2c8891e4048487391a99b11061d6be342	Exp.fmu	2017-09-07 20:11:28	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	64b08742aec7fd889aa5c254f07a7f22abc59f32	Exp.fmu	2017-09-07 18:54:05	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	e30a21c32b7cc6b5b22db4a154a3bd03bbb2a747	Exp.fmu	2017-09-07 18:49:28	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	60975d62ace515756f2c7afaa4f44dbab8436711	Exp.fmu	2017-09-07 18:33:16	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	b3b97cea69d37f817ef43e4c815465a85c7ac4fd	Exp.fmu	2017-09-07 16:58:05	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	6e4962d4a6bf317fbb6c0c513cc894a9d92283df	Exp.fmu	2017-09-07 16:53:31	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	7be107f647d77b9c58144b84861140949cf16f48	Exp.fmu	2017-09-07 16:46:13	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	8e64507e1d9de89e05e093b111d21b68a8370dc0	Exp.fmu	2017-09-07 16:36:44	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	c12b4dda3b77c1a930a40930efc2ad88fa755d32	Exp.fmu	2017-09-07 16:16:44	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	919aea18d889c0592523845ebd9a24ee2f5f1f8f	Exp.fmu	2017-09-07 16:05:36	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	e9ddd28d1a081567dd6897d31fb4c1ff66a12be1	Exp.fmu	2017-09-07 15:36:39	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	33c80e79600da88cf86608a645996eff524b1b6b	Exp.fmu	2017-09-07 15:33:28	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	cf6a586bb6b5b5252e783ab376c0026a5222d6d1	Exp.fmu	2017-09-07 15:03:10	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	17f0b589fb720ea80606f403b093fce2d7379854	Exp.fmu	2017-08-07 20:37:28	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	ce3c93a3f6151f3ae383986f072276d3755e62dc	Exp.fmu	2017-08-07 20:35:08	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	ba80e696697defaca91a1c9813e72797d6d7ab7a	Exp.fmu	2017-08-07 20:31:21	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	a8bfec25000cf8ee8f4867d4f4573ef91e5e1c55	Exp.fmu	2017-08-07 19:36:41	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	4eac4da9e0d1ee969f11206a32c4934ff7ee2273	0ExperimentFaultT.fmu	2017-08-07 18:48:57	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	e94e75c16bdb93f8208efec48c45ac6b04971721	0ExperimentFaultT.fmu	2017-08-07 18:36:09	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	34baafc446d5fd499726389094d5fbe6b7d889d	0ExperimentFaultT.fmu	2017-08-07 18:33:55	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	ef9ecb7cda2770ca1ece4446903351a4e925bfcf	0ExperimentFaultT.fmu	2017-08-07 18:22:58	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	f51a8bc12f759a17ba23f64d2af34d6dd712ed76	0ExperimentFaultT.fmu	2017-08-07 17:43:55	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	dd0f834ce07bf2626c8076d8a29262b8e8834196	0ExperimentFaultT.fmu	2017-08-07 16:00:41	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	a023ce937b6a2c34bdff79783513fce2d624ff3d	0ExperimentFaultT.fmu	2017-08-07 15:49:43	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	593b13793e1570704f89f9cc3184843e9b55320b	0ExperimentFaultT.fmu	2017-08-07 15:33:49	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	d9e8260d2b3b8dd22476a0c58b7ba40122ca6ca6	0ExperimentFaultT.fmu	2017-08-07 14:13:26	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	60ad7aeef1358047ae5459c5afc741cdd189aa9d	0ExperimentFaultT.fmu	2017-07-07 18:38:36	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	9453f55f781cdaa0e8083b29d34f2ca5eda6292b	0ExperimentFaultT.fmu	2017-07-07 18:34:32	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	78ad67297505829ec45f53301d345d287fdf42a9	0ExperimentFaultT.fmu	2017-07-07 18:06:24	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	75062c5ceaa9284ce7d9b0bd522ab7ac962b9208	0ExperimentFaultT.fmu	2017-07-07 18:04:05	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	9e4e20adfc1bae44048fef099ae49c48e8c66f0	0ExperimentFaultT.fmu	2017-07-07 17:59:57	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	66cc7c26e431b20035eafdaa12f9b05ba84eec68	0ExperimentFaultT.fmu	2017-07-07 17:57:32	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	1475db40e0fd23de8938919d8ead6849a277dd0b	0ExperimentFaultT.fmu	2017-07-07 14:25:59	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	ea15d877360964554972099d69d61581dd64491a	experimentCoop.fmu	2017-07-07 12:52:41	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	9eef2124eddf3ecaf363cef6cc3498a8c0d77776	experimentCoop.fmu	2017-06-07 18:20:36	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	6159aa80f057f87b0adad6b1515d4828012bd6b2	experimentCoop.fmu	2017-06-07 17:41:10	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	b699f3f25c2b0ddcc8f4fd4d514c7b62e1ec8523	experimentCoop.fmu	2017-06-07 15:40:20	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	c68ef55c30f5b6b45ec324c6c3026ea21890f24a	experimentCoop.fmu	2017-05-07 20:34:37	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	8af091b9c8295013b0231d155e30e68894a44c18	experimentCoop.fmu	2017-05-07 20:34:26	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	284bcf1667dd8bfea77581193c69c4ea8db64d7e	experimentCoop.fmu	2017-05-07 19:39:49	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	524827ac9d3b3ebf00ad67fc0665e1d1e2d50210	experimentCoop.fmu	2017-05-07 19:24:35	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	8adb99a9f340bba858f7952a6b5e6ee58fe3b4f8	experimentCoop.fmu	2017-05-07 18:02:54	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	333bb8e409a280b8922138ba8fae9200d3bcbe06	experimentCoop.fmu	2017-05-07 17:48:34	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	dfb67f18caeaf6166d7cbd4f84200b40f04cbabc	experimentCoop.fmu	2017-05-07 16:52:46	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	7b60fc8109658fcf09deaf459e13c6442ad306a2	experimentCoop.fmu	2017-05-07 15:22:40	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	2dbd5ae8b57382a4c9e7a2bdfbc1d8cd1a285849	experimentCoop.fmu	2017-05-07 15:20:02	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	8cd2f5d3e50a8b8ab4252ceaf30e0262dbf45d22	experimentCoop.fmu	2017-05-07 15:17:19	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	45ed847ddf690c87d08fd310ce1e983655fafc1b	experimentCoop.fmu	2017-05-07 15:13:19	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	39501b267ae4b85951caaca21ce84c98c695e0a	experimentCoop.fmu	2017-05-07 15:10:51	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	a955ba8580d149e85e52af2571ee98da43bb3fc3	experimentCoop.fmu	2017-05-07 15:05:06	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	a9f656f2be2e7420822b290665311a120e5bfef4	experimentCoop.fmu	2017-05-07 14:57:41	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	ce9d5bb064919e72ea49ff8e6b6d2795ee67f196	experimentCoop.fmu	2017-05-07 14:55:45	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	1c64b71546a0d64a27962949b4ceed188991d1b	experimentCoop.fmu	2017-05-07 14:47:57	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	a698c9b980c57928de904d6ef6c85fd05e09674f	experimentCoop.fmu	2017-05-07 14:45:41	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	48bfb92355cbf921f8a3b03d71ba06bfc93ef7b6	experimentCoop.fmu	2017-05-07 14:39:57	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	18fa1b8460e4d276c9472aba48fef560d46aec82	experimentCoop.fmu	2017-05-07 14:35:18	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	1128b667f7faa6515cb331ef564f260e2b54e498	experimentCoop.fmu	2017-05-07 13:43:40	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	1e5bdef155e71991ea6523c2c933b79d7b60287	experimentCoop.fmu	2017-05-07 13:41:45	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	432d4e02d8171568f4116caaaba739b2b49f3b8d	experimentCoop.fmu	2017-04-07 20:11:18	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	b8a24184c05a7bcd6c0d84d17b58008c60d7e4e5	experimentCoop.fmu	2017-04-07 20:08:32	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	5d4adc8b2b4568241843729a64607824145b7a9	experimentCoop.fmu	2017-04-07 19:45:51	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	9558f3676f84e5922fa0d4ff03833acde736b71d	experimentCoop.fmu	2017-04-07 19:37:35	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	77967bbea03505ab0ff618bf70758d5b3cd81137	experimentCoop.fmu	2017-04-07 19:34:14	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	7c8edbc73da151dbf405d2124a0d0b7616eca597	experimentCoop.fmu	2017-04-07 19:24:01	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	6271b26c64582460c6612495df90701d11cff17f	experimentCoop.fmu	2017-04-07 19:17:54	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	7047781dc124f2bf7ff879e2c7522867ddac4528	experimentCoop.fmu	2017-04-07 19:15:25	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	3b40d6251edc7127eb929a3756543e171f0a5d20	experimentCoop.fmu	2017-04-07 19:13:30	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	79560aa17307793e50d62aa0a6121d8850db4fa5	experimentCoop.fmu	2017-04-07 19:06:23	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	87fdedd72349d8e7257de93e47915ed71885efac	experimentCoop.fmu	2017-04-07 19:05:12	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	a3a95b74dd8dfbbf62e41419a3ecb6059a37193b	experimentCoop.fmu	2017-04-07 19:01:59	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	805b3eb1eed5c05b11ca331b3f8097b7dc05d3b0	experimentCoop.fmu	2017-04-07 18:55:25	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	b42833bbbed0a2610117fab2279b139ad5d8ac4e	experimentCoop.fmu	2017-04-07 18:42:10	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	b269817d0b47d5f3545e9215c2fe0b5d24e84d0b	experimentCoop.fmu	2017-04-07 18:35:14	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	625dc10dcb2ba83ec161aefb7bd30edf37a894ca	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 18:28:18	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	5bff38365a8c7238e362459c892bbbce44c38f52	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 18:19:12	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	b4774b3f7e8f9d9161edec4e74f83c9f33f05e94	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 18:14:19	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	2498cd11db74fb83aea65519b9d51233e0cc1d73	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 18:11:07	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	8764bb1a2504b991e705724b5e14dba485d534c6	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 18:04:03	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	a2d6776bcf88167ef61ad1b6c6d5fd1a338f0d11	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 18:03:22	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	708d2a2773d6fdb3807a0358d0b3e04bb823c6b1	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 18:01:20	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	e2a26cfcddbab2ce8fb815bb73fa65511cba56c9	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 18:00:30	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	e0ad5c7446f064bac25d4dd792566e583ce66584	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 17:57:58	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	3a915b07a52dcabbe149007cab893c8b28fc8572	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 17:50:17	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	ec4525e472bfff006816c52e1e5dce66696133dc	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 17:46:50	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	195e51efe8233db7089ad653d10e9014f0d65e2c	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 17:43:11	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	26818cf534c11b3b08d8a9810a717a82144504f	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 17:08:38	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	93e0b861b13f2a69165246783d5a4a79a8896ebf	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 17:05:07	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	e28ae03d2528c6d08e111c96099565037d661f0c	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 17:01:15	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	d0e61cd7dc990bc03b8a8ed0248424ad5e728e17	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 16:58:39	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	347a90b196997fe52cbf2f1e1d64bc939125cbdf	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 16:55:31	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	f09c52fddb14ea93c847426b356d2848edad467b	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 16:48:04	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	5a51d67951f6b0413314072cca1fdce139e3bb48	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 16:44:21	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	71b8abbf70355b63ed7e15bff812b58942688214	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 16:42:55	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	54a9225e6831f29545107ef76202686f54bf26e7	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 16:40:09	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	fbadc1aaa8a867b1b67c220cf0560062a4417fbb	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 16:38:34	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	a741948a755f6de84ab4b3b422f2b432ec87005a	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 16:35:13	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	a3acc200d31ae419fb2c3aef0b870fffd659a50c	0MULTIPLE_UAV-ETHER-COOPERATIVE.fmu	2017-04-07 16:25:15	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	17d51af2833e8e0ef229661278f5a3476b7be87e	0MULTIPLE_UAV_ETHER.fmu	2017-02-07 21:15:05	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	f9094d2c8b7ca7e489ca9e5765b2eff6ee763a0a	0MULTIPLE_UAV_ETHER.fmu	2017-02-07 20:23:42	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	880858b57abff530330ebcacc8a7272d4f583158	0MULTIPLE_UAV_ETHER.fmu	2017-02-07 14:51:49	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	939d1a9315751ea1dad2a7f35660caac86449367	0MULTIPLE_UAV_ETHER.fmu	2017-02-07 14:47:50	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	94ab9263cdd6f1d5df52a85e6575743501dc8960	0MULTIPLE_UAV_ETHER.fmu	2017-01-07 20:54:58	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	bb01ec0661d6dbc40eb2f9ecc0eab9136df4fe93	0MULTIPLE_UAV_ETHER.fmu	2017-01-07 20:50:02	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	32f682797a1752ca7044be0f7c32e98b113988c0	0MULTIPLE_UAV_ETHER.fmu	2017-01-07 20:45:26	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	786f14e9dc56ce9babca76a6405b1db1493ab82f	0MULTIPLE_UAV_ETHER.fmu	2017-01-07 17:29:00	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	f6d77c2cb718891cbced2cf37e276defc19f1325	0MULTIPLE_UAV_ETHER.fmu	2017-01-07 17:00:03	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	7d6984e4f7a35d37fe56997b3ffd7de3c0a2a9c9	0MULTIPLE_UAV_ETHER.fmu	2017-01-07 16:27:25	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+--##	EXPORT	40e2dc944062020c7799a41c4951e12748d60be2	UAVControllerAttemptWwayGenerator.fmu	2017-18-06 19:50:35	tool-wrapper	{"name":"fmu-import-export","version":"0.2.4"}
+
+class HardwareInterface
+
+-- INPUT VARIABLES
+instance variables
+    
+    
+  -- @ interface: type = input, name="posXIn";
+  public posXIn : RealPort := new RealPort(0.0);
+  
+  -- @ interface: type = input, name="posYIn";
+  public posYIn : RealPort := new RealPort(0.0);
+    
+  -- @ interface: type = input, name="posZIn";
+  public posZIn : RealPort := new RealPort(0.0);
+  
+  -- @ interface: type = input, name="yawIn";
+  public yawIn : RealPort := new RealPort(0.0);
+    
+  -- @ interface: type = input, name="velXIn";
+  public velXIn : RealPort := new RealPort(0.0);
+  
+  -- @ interface: type = input, name="velYIn";
+  public velYIn : RealPort := new RealPort(0.0);
+    
+  -- @ interface: type = input, name="velZIn";
+  public velZIn : RealPort := new RealPort(0.0);
+  
+  -- @ interface: type = input, name="batteryChargeIn";
+  public batteryChargeIn : RealPort := new RealPort(0.0);
+  
+-- OUTPUT VARIABLES
+instance variables
+
+  -- @ interface: type = output, name="pitchOut";
+  public pitchOut : RealPort := new RealPort(0.0);
+ 
+  -- @ interface: type = output, name="rollOut";
+  public rollOut : RealPort := new RealPort(0.0);
+
+  -- @ interface: type = output, name="yawOut";
+  public yawOut : RealPort := new RealPort(0.0);
+ 
+  -- @ interface: type = output, name="throttleOut";
+  public throttleOut : RealPort := new RealPort(0.0);
+  
+-- ETHER CONNECTIONS
+instance variables
+	
+	-- @ interface: type = input, name="etherIn";
+	public etherIn : StringPort := new StringPort("");
+	-- @ interface: type = output, name="etherOut";
+	public etherOut : StringPort := new StringPort("");
+  
+values
+
+	-- @ interface : type = parameter, name="xmin";
+	public xmin : RealPort = new RealPort(10.0);
+	-- @ interface : type = parameter, name="xmax";
+	public xmax : RealPort = new RealPort(130.0);
+	-- @ interface : type = parameter, name="ymin";
+	public ymin : RealPort = new RealPort(10.0);
+	-- @ interface : type = parameter, name="ymax";
+	public ymax : RealPort = new RealPort(130.0);
+	-- @ interface : type = parameter, name="idNum";
+	public idNum : IntPort = new IntPort(1);
+	-- @ interface : type = parameter, name="xCam";
+	public xCam : RealPort = new RealPort(10.0);
+	-- @ interface : type = parameter, name="yCam";
+	public yCam : RealPort = new RealPort(10.0);
+	-- @ interface : type = parameter, name="dAltitude";
+	public dAltitude : RealPort = new RealPort(20.0);
+	-- @ interface : type = parameter, name="scanAreaPerUAV";
+	public scanAreaPerUAV : RealPort = new RealPort(5000.0);
+  
+end HardwareInterface
